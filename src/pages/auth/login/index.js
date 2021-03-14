@@ -11,6 +11,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import fields, {defaultValues} from './login.field';
+import { useDispatch } from 'react-redux';
+import { authLogin } from '../../../store/actions/auth.actions';
 
 const classes = makeStyles((theme) => ({
   paper: {
@@ -38,9 +40,11 @@ const Login = () => {
     defaultValues
   });
 
+  const dispatch = useDispatch();
+
   const onSubmit = (data) => {
     console.log("🚀 ~ file: login.js ~ line 45 ~ onSubmit ~ data", data)
-
+    dispatch(authLogin(data))
   }
 
   const renderFields = fields.map((field) => (

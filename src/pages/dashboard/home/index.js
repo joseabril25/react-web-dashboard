@@ -16,10 +16,10 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import StatCard from '../../../components/StatCard';
 import MainTable from '../../../components/Table';
 import { sideMenu } from '../../../components/SideMenu/sideMenu';
+import { useSelector } from 'react-redux';
 
 const drawerWidth = 240;
 
@@ -103,6 +103,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Dashboard = () => {
+  const user = useSelector(({auth}) => auth);
+  console.log("🚀 ~ file: index.js ~ line 107 ~ Dashboard ~ user", user)
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -131,8 +133,13 @@ const Dashboard = () => {
             Dashboard
           </Typography>
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
+            <Badge color="secondary">
+              Logout
+            </Badge>
+          </IconButton>
+          <IconButton color="inherit">
+            <Badge color="secondary">
+              {/* Hello, {user.firstName} */}
             </Badge>
           </IconButton>
         </Toolbar>

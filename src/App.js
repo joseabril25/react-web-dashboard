@@ -6,24 +6,29 @@ import {
 import Login from './pages/auth/login';
 import Register from './pages/auth/register';
 import Dashboard from './pages/dashboard/home';
+import { Provider } from 'react-redux';
+import store from './store/store'
 
 const App = () => {
   return (
-    <div className="App">
-      <Router >
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <Router >
+          <Switch>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    </Provider>
+    
   );
 }
 
