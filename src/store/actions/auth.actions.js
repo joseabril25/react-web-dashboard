@@ -12,6 +12,11 @@ export const authLogin = (payload) => ({
   payload,
 });
 
+export const authRegister = (payload) => ({
+  type: authTypes.AUTH_HANDLE_REGISTER,
+  payload,
+});
+
 export const authLogout = () => ({
   type: authTypes.AUT_LOGOUT,
 });

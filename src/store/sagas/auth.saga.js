@@ -8,10 +8,15 @@ const apiLogin = ({email, password}) =>
     process.env.REACT_APP_API_URL + '/api/v1/auth/login',
     { email, password }
   );
+
+const apiRegister = (query) =>
+  axios.post(
+    process.env.REACT_APP_API_URL + '/api/v1/auth/register',
+    query
+  );
     
 function* authLogin({payload}) {
-  console.log("🚀 ~ file: auth.saga.js ~ line 13 ~ function*authLogin ~ payload", payload)
-  const { email, password} = payload;
+  const { email, password } = payload;
 
   yield put({ type: authTypes.AUT_LOGIN_LOADING, payload: true})
   try {
@@ -25,13 +30,35 @@ function* authLogin({payload}) {
       ])
       yield Cookies.set('jwt', jwt, { expires: 2 });
       yield Cookies.set('user', {...user}, { expires: 2 });
-      yield document.location.href = '/dashboard'
+      yield document.location.href = '/dashboard';
     }
   } catch (error) {
-    yield put({ type: authTypes.AUT_LOGIN_ERROR, payload: 'Invalid login credentials'})
+    yield put({ type: authTypes.AUT_LOGIN_ERROR, payload: error?.response?.data?.error || 'Something went wrong'})
     
   } finally {
     yield put({ type: authTypes.AUT_LOGIN_LOADING, payload: false})
+  }
+}
+
+function* authRegister({payload}) {
+  yield put({ type: authTypes.AUT_REGISTER_LOADING, payload: true})
+  try {
+    const {data: {token: jwt, user}, status} = yield call(apiRegister, payload);
+
+    if(status === 200) {
+      yield all([
+        put({ type: authTypes.AUT_SET_LOGGED, payload: true}),
+        put({ type: authTypes.AUT_SET_TOKEN, payload: jwt}),
+        put({ type: authTypes.AUT_SET_USER, payload: user}),
+      ])
+      yield Cookies.set('jwt', jwt, { expires: 2 });
+      yield Cookies.set('user', {...user}, { expires: 2 });
+      yield document.location.href = '/dashboard';
+    }
+  } catch (error) {
+    yield put({ type: authTypes.AUT_REGISTER_ERROR, payload: error?.response?.data?.error || 'Something went wrong'})
+  } finally {
+    yield put({ type: authTypes.AUT_REGISTER_LOADING, payload: false})
   }
 }
 
@@ -42,6 +69,7 @@ function* authLogout(){
     put({ type: authTypes.AUT_SET_LOGGED, payload: false}),
     put({ type: authTypes.AUT_SET_USER, payload: null}),
   ])
+  yield document.location.href = '/login'
 }
 
 function* authCheck() {
@@ -62,5 +90,6 @@ export function* authWatcher() {
   yield takeLatest(authTypes.AUT_LOGIN, authLogin);
   yield takeLatest(authTypes.AUT_LOGOUT, authLogout);
   yield takeLatest(authTypes.AUT_CHECK, authCheck);
+  yield takeLatest(authTypes.AUTH_HANDLE_REGISTER, authRegister);
 }
   

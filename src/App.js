@@ -8,24 +8,39 @@ import Register from './pages/auth/register';
 import Dashboard from './pages/dashboard/home';
 import { Provider } from 'react-redux';
 import store from './store/store'
+import AuthChecker from './components/AuthChecker/AuthChecker';
+
+const routes = [
+  {
+    path: "/login",
+    component: Login
+  },
+  {
+    path: "/register",
+    component: Register
+  },
+  {
+    path: "/dashboard",
+    component: Dashboard
+  },
+];
+
 
 const App = () => {
   return (
     <Provider store={store}>
       <div className="App">
-        <Router >
-          <Switch>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/register">
-              <Register />
-            </Route>
-            <Route path="/dashboard">
-              <Dashboard />
-            </Route>
-          </Switch>
-        </Router>
+        <AuthChecker>
+          <Router >
+            <Switch>
+              {routes.map((route, index) => (
+                <Route path={route.path} key={index}>
+                  <route.component />
+                </Route>
+              ))}
+            </Switch>
+          </Router>
+        </AuthChecker>
       </div>
     </Provider>
     

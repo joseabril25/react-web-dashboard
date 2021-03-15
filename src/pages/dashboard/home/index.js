@@ -19,7 +19,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import StatCard from '../../../components/StatCard';
 import MainTable from '../../../components/Table';
 import { sideMenu } from '../../../components/SideMenu/sideMenu';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { authLogout } from '../../../store/actions/auth.actions';
 
 const drawerWidth = 240;
 
@@ -103,16 +105,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Dashboard = () => {
-  const user = useSelector(({auth}) => auth);
-  console.log("🚀 ~ file: index.js ~ line 107 ~ Dashboard ~ user", user)
+  const user = useSelector(({auth}) => auth.user);
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleLogout = () => {
+    dispatch(authLogout());
+  }
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
@@ -134,12 +142,12 @@ const Dashboard = () => {
           </Typography>
           <IconButton color="inherit">
             <Badge color="secondary">
-              Logout
+              Hello, {user?.firstName || ''}
             </Badge>
           </IconButton>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={handleLogout}>
             <Badge color="secondary">
-              {/* Hello, {user.firstName} */}
+              Logout
             </Badge>
           </IconButton>
         </Toolbar>

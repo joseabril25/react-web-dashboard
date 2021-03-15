@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import fields, {defaultValues} from './register.field';
+import { useDispatch, useSelector } from 'react-redux';
+import { authRegister } from '../../../store/actions/auth.actions';
 
 const classes = makeStyles((theme) => ({
   paper: {
@@ -34,14 +36,24 @@ const classes = makeStyles((theme) => ({
 }));
 
 const Register = () => {
+  const [error, setError] = useState(null);
+  console.log("🚀 ~ file: index.js ~ line 40 ~ Register ~ error", error)
+
+  const registerError = useSelector(({auth}) => auth.registerError);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(registerError) {
+      setError(registerError)
+    }
+  }, [registerError])
   const { register, handleSubmit, errors, reset, control } = useForm({
     mode: 'onSubmit',
     defaultValues
   });
 
   const onSubmit = (data) => {
-    console.log("🚀 ~ file: login.js ~ line 45 ~ onSubmit ~ data", data)
-
+    dispatch(authRegister(data));
   }
 
   const renderFields = fields.map((field) => (
@@ -119,6 +131,11 @@ const Register = () => {
               <Link href="/login" variant="body2">
                 {"Already have an account? Log In"}
               </Link>
+            </Grid>
+          </Grid>
+          <Grid container>
+            <Grid item>
+              {error && <>{error}</>}
             </Grid>
           </Grid>
         </form>

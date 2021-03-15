@@ -6,7 +6,9 @@ const defaultState = {
 
   isLoggedIn: false,
   isLoginLoading: false,
+  isRegisterLoading: false,
   loginError: null,
+  registerError: null,
 
   isOnboarding: false,
 
@@ -42,6 +44,20 @@ const authReducer = (state = defaultState, action) => {
       return {
         ...state,
         loginError: action.payload,
+      };
+    }
+
+    // Register
+    case authTypes.AUT_REGISTER_LOADING: {
+      return {
+        ...state,
+        isRegisterLoading: action.payload,
+      };
+    }
+    case authTypes.AUT_REGISTER_ERROR: {
+      return {
+        ...state,
+        registerError: action.payload,
       };
     }
 
