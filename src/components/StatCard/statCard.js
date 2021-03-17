@@ -14,22 +14,13 @@ const useStyles = makeStyles({
   },
 });
 
-const StatCard = ({ title }) => {
-  const classes = useStyles();
+const StatCard = ({ title, data }) => {
   return (
     <React.Fragment>
       <Title>{title}</Title>
       <Typography component="p" variant="h4">
-        $3,024.00
+        {data}
       </Typography>
-      <Typography color="textSecondary" className={classes.depositContext}>
-        on 15 March, 2019
-      </Typography>
-      <div>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
-        </Link>
-      </div>
     </React.Fragment>
   );
 }

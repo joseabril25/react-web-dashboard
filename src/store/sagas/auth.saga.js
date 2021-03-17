@@ -1,4 +1,4 @@
-import { authTypes } from "../types";
+import { appTypes, authTypes } from "../types";
 import { takeLatest, put, all, call } from 'redux-saga/effects';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -27,10 +27,11 @@ function* authLogin({payload}) {
         put({ type: authTypes.AUT_SET_LOGGED, payload: true}),
         put({ type: authTypes.AUT_SET_TOKEN, payload: jwt}),
         put({ type: authTypes.AUT_SET_USER, payload: user}),
+        put({ type: appTypes.APP_HANDLE_ANALYTICS }),
       ])
       yield Cookies.set('jwt', jwt, { expires: 2 });
       yield Cookies.set('user', {...user}, { expires: 2 });
-      yield document.location.href = '/dashboard';
+      // yield document.location.href = '/dashboard';
     }
   } catch (error) {
     yield put({ type: authTypes.AUT_LOGIN_ERROR, payload: error?.response?.data?.error || 'Something went wrong'})
@@ -80,7 +81,8 @@ function* authCheck() {
     yield all([
       put({ type: authTypes.AUT_SET_LOGGED, payload: true}),
       put({ type: authTypes.AUT_SET_TOKEN, payload: jwt}),
-      put({ type: authTypes.AUT_SET_USER, payload: JSON.parse(user)}),
+      put({ type: authTypes.AUT_SET_USER, payload: user}),
+      put({ type: appTypes.APP_HANDLE_ANALYTICS }),
     ])
   }
 }

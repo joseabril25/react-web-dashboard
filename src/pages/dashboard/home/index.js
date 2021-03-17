@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -105,11 +105,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Dashboard = () => {
-  const user = useSelector(({auth}) => auth.user);
+  const { user, analyticsData } = useSelector(({ auth, app }) => ({
+    user: auth.user,
+    analyticsData: app.analyticsData
+  }));
+  console.log("🚀 ~ file: index.js ~ line 109 ~ const{user,analyticsData}=useSelector ~ analyticsData", analyticsData)
+  const [userData, setUserData] = useState({})
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
   
+  useEffect(() => {
+    if(user){
+      setUserData(JSON.parse(user))
+    }
+  }, [user])
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -142,7 +152,7 @@ const Dashboard = () => {
           </Typography>
           <IconButton color="inherit">
             <Badge color="secondary">
-              Hello, {user?.firstName || ''}
+              Hello, {userData?.firstName || ''}
             </Badge>
           </IconButton>
           <IconButton color="inherit" onClick={handleLogout}>
@@ -174,31 +184,43 @@ const Dashboard = () => {
             {/* Total Users */}
             <Grid item xs={12} md={8} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <StatCard title={'Total Users'} />
+                <StatCard title={'Total Users'} data={analyticsData?.totalUsers} />
               </Paper>
             </Grid>
-            {/* Users per gender */}
+            {/* Users per Female */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <StatCard title={'Users Per Gender'} />
+                <StatCard title={'Female Users'} data={analyticsData?.totalFemale}/>
+              </Paper>
+            </Grid>
+            {/* Users per male */}
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper className={fixedHeightPaper}>
+                <StatCard title={'Male Users'} data={analyticsData?.totalMale}/>
               </Paper>
             </Grid>
             {/* Active */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <StatCard title={'Active Users'} />
+                <StatCard title={'Active Users'} data={analyticsData?.activeUsers}/>
+              </Paper>
+            </Grid>
+            {/* Inactive */}
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper className={fixedHeightPaper}>
+                <StatCard title={'Inactive Users'} data={analyticsData?.inactiveUsers}/>
               </Paper>
             </Grid>
             {/* Per registration */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <StatCard title={'Per Registration Type'} />
+                <StatCard title={'Mobile Users'} data={analyticsData?.mobileUsers}/>
               </Paper>
             </Grid>
             {/* Average per day */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <StatCard title={'Average Registration Per Day'} />
+                <StatCard title={'Email Users'} data={analyticsData?.emailUsers}/>
               </Paper>
             </Grid>
             {/* Recent Orders */}

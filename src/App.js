@@ -30,8 +30,8 @@ const App = () => {
   return (
     <Provider store={store}>
       <div className="App">
-        <AuthChecker>
-          <Router >
+        <Router >
+          <AuthChecker>
             <Switch>
               {routes.map((route, index) => (
                 <Route path={route.path} key={index}>
@@ -39,8 +39,8 @@ const App = () => {
                 </Route>
               ))}
             </Switch>
-          </Router>
-        </AuthChecker>
+          </AuthChecker>
+        </Router>
       </div>
     </Provider>
     
