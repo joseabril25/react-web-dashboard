@@ -6,3 +6,7 @@ import { appTypes } from '../types';
 export const getAnalytics = () => ({
   type: appTypes.APP_HANDLE_ANALYTICS,
 });
+
+export const getUsers = () => ({
+  type: appTypes.APP_HANDLE_USERS,
+});

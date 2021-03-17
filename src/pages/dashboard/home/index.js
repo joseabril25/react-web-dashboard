@@ -105,9 +105,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Dashboard = () => {
-  const { user, analyticsData } = useSelector(({ auth, app }) => ({
+  const { user, analyticsData, usersData } = useSelector(({ auth, app }) => ({
     user: auth.user,
-    analyticsData: app.analyticsData
+    analyticsData: app.analyticsData,
+    usersData: app.userList
   }));
   console.log("🚀 ~ file: index.js ~ line 109 ~ const{user,analyticsData}=useSelector ~ analyticsData", analyticsData)
   const [userData, setUserData] = useState({})
@@ -119,7 +120,8 @@ const Dashboard = () => {
     if(user){
       setUserData(JSON.parse(user))
     }
-  }, [user])
+  }, [user]);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -226,7 +228,7 @@ const Dashboard = () => {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <MainTable title={'Users'} />
+                <MainTable title={'Users'} data={usersData}/>
               </Paper>
             </Grid>
           </Grid>

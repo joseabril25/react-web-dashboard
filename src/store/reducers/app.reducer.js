@@ -1,6 +1,7 @@
 import { appTypes } from '../types';
 const defaultState = {
   analyticsData: null,
+  userList: [],
   session: false
 };
 
@@ -10,6 +11,11 @@ const reducer = (state = defaultState, action) => {
       return {
         ...state,
         analyticsData: action.payload,
+      };
+    case appTypes.APP_SET_USERS:
+      return {
+        ...state,
+        userList: action.payload,
       };
     case appTypes.APP_SET_SESSION:
       return {

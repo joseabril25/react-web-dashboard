@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -31,38 +31,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MainTable = ({ title }) => {
+const MainTable = ({ title, data }) => {
   const classes = useStyles();
+  const [ usersData, setUsersData ] = useState({});
+  console.log("🚀 ~ file: table.js ~ line 37 ~ MainTable ~ usersData", data)
+
+  useEffect(() => {
+    if(data){
+      const rows = data.map((d) => {
+        return createData(d);
+      })
+      setUsersData(rows)
+    }
+  }, [data]);
+
   return (
     <React.Fragment>
       <Title>{title}</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+            <TableCell>Birth Date</TableCell>
+            <TableCell>Gender</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Mobile No.</TableCell>
+            <TableCell>Active</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {data.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
+              <TableCell>{row.firstName + ' ' + row.middleName + ' ' + row.lastName}</TableCell>
+              <TableCell>{row.bday}</TableCell>
+              <TableCell>{row.gender}</TableCell>
+              <TableCell>{row.email}</TableCell>
+              <TableCell>{row.mobile}</TableCell>
+              <TableCell>{row.active === 1 ? 'Yes' : 'No'}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <div className={classes.seeMore}>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          See more orders
-        </Link>
-      </div>
     </React.Fragment>
   );
 }

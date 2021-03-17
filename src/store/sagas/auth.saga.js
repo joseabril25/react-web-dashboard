@@ -28,6 +28,7 @@ function* authLogin({payload}) {
         put({ type: authTypes.AUT_SET_TOKEN, payload: jwt}),
         put({ type: authTypes.AUT_SET_USER, payload: user}),
         put({ type: appTypes.APP_HANDLE_ANALYTICS }),
+        put({ type: appTypes.APP_HANDLE_USERS }),
       ])
       yield Cookies.set('jwt', jwt, { expires: 2 });
       yield Cookies.set('user', {...user}, { expires: 2 });
@@ -83,6 +84,7 @@ function* authCheck() {
       put({ type: authTypes.AUT_SET_TOKEN, payload: jwt}),
       put({ type: authTypes.AUT_SET_USER, payload: user}),
       put({ type: appTypes.APP_HANDLE_ANALYTICS }),
+      put({ type: appTypes.APP_HANDLE_USERS }),
     ])
   }
 }
