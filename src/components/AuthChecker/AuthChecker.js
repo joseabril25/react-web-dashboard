@@ -8,7 +8,6 @@ import { authCheck } from '../../store/actions/auth.actions';
 const AuthChecker = ({ children }) => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(({auth}) => auth.isLoggedIn);
-  console.log("🚀 ~ file: AuthChecker.js ~ line 8 ~ AuthChecker ~ isLoggedIn", isLoggedIn)
 
   useEffect(() => {
     dispatch(authCheck());
@@ -16,15 +15,9 @@ const AuthChecker = ({ children }) => {
 
   return (
     <Router>
-      {isLoggedIn ? <Redirect 
+      {isLoggedIn && <Redirect 
         to={{
           pathname: "/dashboard",
-        }}
-      />
-        :
-      <Redirect 
-        to={{
-          pathname: "/login",
         }}
       />
       }

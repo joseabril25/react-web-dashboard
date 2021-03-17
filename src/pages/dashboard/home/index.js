@@ -105,8 +105,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Dashboard = () => {
-  const { user, analyticsData, usersData } = useSelector(({ auth, app }) => ({
+  const { user, analyticsData, usersData, isLoggedIn } = useSelector(({ auth, app }) => ({
     user: auth.user,
+    isLoggedIn: auth.isLoggedIn,
     analyticsData: app.analyticsData,
     usersData: app.userList
   }));
